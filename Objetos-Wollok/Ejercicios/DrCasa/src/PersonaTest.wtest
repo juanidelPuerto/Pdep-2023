@@ -1,0 +1,49 @@
+import Persona.*
+import EnfermedadInfecciosa.*
+import EnfermedadAutoinmune.*
+
+describe "Persona"{
+	var malaria1
+	var malaria2
+	var otitis
+	var lupus
+	var logan
+	var frank
+	
+method initialize(){
+	malaria1 = new EnfermedadInfecciosa(nombre = "Malaria", cantidadCelulasAmenazadas = 500)
+	malaria2 = new EnfermedadInfecciosa(nombre = "Malaria", cantidadCelulasAmenazadas = 800)
+	otitis = new EnfermedadInfecciosa(nombre = "Otitis", cantidadCelulasAmenazadas = 100)
+	lupus = new EnfermedadAutoinmune(nombre = "Lupus", cantidadCelulasAmenazadas = 10000)
+	frank = new Persona(nombre = "Frank", temperatura = 36, cantidadCelulas = 3500000, enfermedades = []) 
+	logan = new Persona(nombre = "Logan", temperatura = 36, cantidadCelulas = 3000000, enfermedades = [])
+	logan.contraerEnfermedad(malaria1)
+	logan.contraerEnfermedad(otitis)
+	logan.contraerEnfermedad(lupus)
+	}
+
+	test "punto 1" {
+		frank.contraerEnfermedad(malaria2)
+		assert.equals([malaria2], frank.enfermedades())
+
+	}
+	
+	test "punto 2"{
+		malaria1.reproducirseASiMisma()
+		assert.equals(1000, malaria1.cantidadCelulasAmenazadas())
+	}
+	
+	test "punto 3"{
+		logan.vivirUnDia()
+		assert.that(logan.enComa())
+		assert.equals(logan.enfermedadMasDaninia(), lupus)
+		
+	}
+	
+	test "punto 4"{
+		31.times{i => logan.vivirUnDia()}
+		assert.that(logan.enComa())
+		assert.equals(logan.enfermedadMasDaninia(), lupus)
+	}
+
+}
